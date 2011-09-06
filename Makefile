@@ -1,7 +1,7 @@
 CXX := g++
 RELEASE := 1
 
-OPT := -Wall -fopenmp -lz
+OPT := -Wall -fopenmp
 ifeq ($(RELEASE),1)
 OPT += -O3
 else
@@ -20,11 +20,11 @@ ARCH := $(shell uname)
 SUM	= $(shell find . -name "*.h" -print0 -o -name "*.cpp" -print0 | xargs -0 wc -l | grep total )
 
 ifeq ($(ARCH),Darwin)
-	LIB := -fopenmp -framework OpenGL -framework GLUT
+	LIB := -fopenmp
 endif
 
 ifeq ($(ARCH),Linux)
-	LIB := -fopenmp -lglut -lGLEW -lgsl -lgslcblas
+	LIB := -fopenmp
 endif
 
 all:
