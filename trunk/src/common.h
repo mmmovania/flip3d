@@ -4,8 +4,6 @@
  *
  */
 
-#include <vector>
-
 #ifndef _COMMON_H
 #define _COMMON_H
 
@@ -23,7 +21,6 @@
 
 #define PI          3.14159265
 
-struct _GLMmodel;
 typedef struct {
 	char type;
 	char shape;
@@ -46,11 +43,6 @@ typedef struct _particle {
 	FLOAT m;
 	FLOAT dens;
 } particle;
-
-typedef struct _particle_iterator {
-	particle *p;
-	_particle_iterator *next;
-} particle_iterator;
 
 typedef struct _ipos {
 	int i; int j; int k;
