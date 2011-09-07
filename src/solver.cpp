@@ -203,7 +203,7 @@ static void conjGrad( char ***A, FLOAT ***P, FLOAT ***L, FLOAT ***x, FLOAT ***b,
         error2_0 = fmax(error2_0,error2);
         
         // Dump Progress
-        FLOAT rate = (1.0 - (error2-eps)/(error2_0-eps));
+        FLOAT rate = 1.0 - (error2-eps)/(error2_0-eps);
         dump( "%d th %s Iteration %f%% Solved.\n", k+1, USE_PRECOND ? "PCG" : "CG", 100.0*rate );
         if( error2 <= eps ) break;
         
@@ -233,6 +233,8 @@ FLOAT solver::solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
 	
 	// Build Modified Incomplete Cholesky Precondioner Matrix
 #if USE_PRECOND
+    dumptime();
+    dump("Building Preconditioner...");
 	buildPreconditioner(P,L,A,n);
 #endif
 	// Conjugate Gradient Method

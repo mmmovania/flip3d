@@ -1,13 +1,11 @@
 /*
  *  flip3D.cpp
  *  flip3D
- *
  */
 
 #include "common.h"
 #include "utility.h"
 #include "flip3D.h"
-#include "BinVoxReader.h"
 #include "utility.h"
 #include "solver.h"
 #include "corrector.h"
@@ -21,9 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <vector>
-#include <stdio.h>
-#include <sys/time.h>
 
 using namespace std;
 
@@ -32,14 +27,15 @@ using namespace std;
 #define WRITE_SAVE      0
 #define MAX_STEP        600
 
-#define ALPHA		0.95
-#define DT			0.6e-2
-#define DENSITY		0.5
-#define	GRAVITY		9.8
+#define ALPHA           0.95
+#define DT              0.6e-2
+#define DENSITY         0.5
+#define	GRAVITY         9.8
 
-#define FLIP		1
-#define	WALL_THICK	(1.0/N)
-#define SUBCELL		1
+#define FLIP            1
+#define	WALL_THICK      (1.0/N)
+#define SUBCELL         1
+
 #define DISABLE_CORRECTION		0
 
 static int pourTime = -1;
@@ -62,27 +58,6 @@ static vector<Object> objects;
 static FLOAT max_dens = 0.0;
 static int step = 0;
 static int gNumStuck = 0;
-
-static unsigned long getMicroseconds() {
-#if defined(_WIN32)
-	LARGE_INTEGER nFreq, Time;
-	QueryPerformanceFrequency(&nFreq);
-	QueryPerformanceCounter(&Time);
-	return (double)Time.QuadPart / nFreq.QuadPart * 1000000;
-#else
-	struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec*1000000 + tv.tv_usec;
-#endif
-}
-
-static double dumptime() {
-	static unsigned prevMicroSec = getMicroseconds();
-	unsigned curMicroSec = getMicroseconds();
-	double res = (curMicroSec - prevMicroSec)/1000000.0;
-	prevMicroSec = curMicroSec;
-	return res;
-}
 
 static unsigned prevGlobalMicroSec = 0;
 static void resetSimulationTime() {
@@ -1024,23 +999,6 @@ static void subtract_grid() {
 	} END_FOR
 }
 
-static void makeMovieOnSite() {
-	char command[256];
-#if defined(__APPLE__) || defined(MACOSX)
-	const char *ffmpeg_path = "/opt/local/bin/ffmpeg";
-#else
-	const char *ffmpeg_path = "ffmpeg";
-#endif
-	dump( "[ MAKING MOVIE ] Making Movie Over FFMPEG...");
-	system( "rm -rf render/pbrt.mp4" );
-	sprintf(command, "%s -qscale 4 -r 50 -b 9600 -i render/pbrt/img/%s_scene.png render/pbrt.mp4", ffmpeg_path, "%d" );
-	system(command);
-	system( "rm -rf render/renderman.mp4" );
-	sprintf(command, "%s -qscale 4 -r 50 -b 9600 -i render/renderman/%s_scene.tiff render/renderman.mp4", ffmpeg_path, "%d" );
-	system(command);
-	dump( "%.2f sec\n", dumptime() );
-}
-
 static void write_mesh() {
     // Generate Mesh
     dump( "[ MESH EXPORT ] Generating Meshes...");
@@ -1300,6 +1258,7 @@ void flip3D::simulateStep() {
     
     // If Exceeds Max Step Exit
 	if( step > MAX_STEP ) {
+        dump( "Maximum Timestep Reached. Exiting...\n");
 		exit(0);
 	}
 }

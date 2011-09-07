@@ -17,7 +17,6 @@
 		C13D9B3213216DB000733ADD /* sorter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13D9B3113216DB000733ADD /* sorter.cpp */; };
 		C13D9B53132172AD00733ADD /* mapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13D9B52132172AD00733ADD /* mapper.cpp */; };
 		C13D9D901321952100733ADD /* corrector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13D9D8F1321952100733ADD /* corrector.cpp */; };
-		C13DADF61322C08400733ADD /* BinVoxReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13DADEE1322C08400733ADD /* BinVoxReader.cpp */; };
 		C13DADF71322C08400733ADD /* CIsoSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13DADF01322C08400733ADD /* CIsoSurface.cpp */; };
 		C13DADF91322C08400733ADD /* Vectors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13DADF41322C08400733ADD /* Vectors.cpp */; };
 		C13DAE151322C0DB00733ADD /* exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C13DAE131322C0DB00733ADD /* exporter.cpp */; };
@@ -59,8 +58,6 @@
 		C13D9B52132172AD00733ADD /* mapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mapper.cpp; path = src/mapper.cpp; sourceTree = "<group>"; };
 		C13D9D8E1321952100733ADD /* corrector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = corrector.h; path = src/corrector.h; sourceTree = "<group>"; };
 		C13D9D8F1321952100733ADD /* corrector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = corrector.cpp; path = src/corrector.cpp; sourceTree = "<group>"; };
-		C13DADEE1322C08400733ADD /* BinVoxReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinVoxReader.cpp; sourceTree = "<group>"; };
-		C13DADEF1322C08400733ADD /* BinVoxReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinVoxReader.h; sourceTree = "<group>"; };
 		C13DADF01322C08400733ADD /* CIsoSurface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CIsoSurface.cpp; sourceTree = "<group>"; };
 		C13DADF11322C08400733ADD /* CIsoSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIsoSurface.h; sourceTree = "<group>"; };
 		C13DADF41322C08400733ADD /* Vectors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vectors.cpp; sourceTree = "<group>"; };
@@ -144,8 +141,6 @@
 		C13DADED1322C08400733ADD /* rchandra */ = {
 			isa = PBXGroup;
 			children = (
-				C13DADEF1322C08400733ADD /* BinVoxReader.h */,
-				C13DADEE1322C08400733ADD /* BinVoxReader.cpp */,
 				C13DADF11322C08400733ADD /* CIsoSurface.h */,
 				C13DADF01322C08400733ADD /* CIsoSurface.cpp */,
 				C13DADF51322C08400733ADD /* Vectors.h */,
@@ -224,7 +219,6 @@
 				C13D9B3213216DB000733ADD /* sorter.cpp in Sources */,
 				C13D9B53132172AD00733ADD /* mapper.cpp in Sources */,
 				C13D9D901321952100733ADD /* corrector.cpp in Sources */,
-				C13DADF61322C08400733ADD /* BinVoxReader.cpp in Sources */,
 				C13DADF71322C08400733ADD /* CIsoSurface.cpp in Sources */,
 				C13DADF91322C08400733ADD /* Vectors.cpp in Sources */,
 				C13DAE151322C0DB00733ADD /* exporter.cpp in Sources */,

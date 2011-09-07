@@ -5,6 +5,7 @@
  */
 
 #include "common.h"
+#include <vector>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -56,6 +57,9 @@ template <class T> void free3D( T ***ptr ) {
 	}
 	delete [] ptr;
 }
+
+unsigned long getMicroseconds();
+double dumptime();
 
 static void dump(const char *format, ...) {
 	va_list args;
