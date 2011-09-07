@@ -54,7 +54,8 @@ static double product( char ***A, FLOAT ***x, FLOAT ***y, int n ) {
 }
 
 // x = 0
-static void clear( FLOAT ***x, int n ) {
+template <class T>
+static void clear( T ***x, int n ) {
 	OPENMP_FOR FOR_EVERY_COMP(n) {
 		x[i][j][k] = 0.0;
 	} END_FOR;
@@ -115,30 +116,31 @@ static FLOAT A_diag( char ***A, FLOAT ***L, int i, int j, int k, int n ) {
 	return diag;
 }
 
-static FLOAT P_ref( FLOAT ***P, int i, int j, int k, int n ) {
+template <class T>
+static FLOAT P_ref( T ***P, int i, int j, int k, int n ) {
 	if( i<0 || i>n-1 || j<0 || j>n-1 || k<0 || k>n-1 || P[i][j][k] != FLUID ) return 0.0;
 	return P[i][j][k];
 }
 
-static void buildPreconditioner( FLOAT ***P, FLOAT ***L, char ***A, int n ) {
+static void buildPreconditioner( double ***P, FLOAT ***L, char ***A, int n ) {
 	clear(P,n);
-	FLOAT a = 0.25;
+	double a = 0.25;
 	FOR_EVERY_COMP(n) {
 		if( A[i][j][k] == FLUID ) {
-			FLOAT left = A_ref(A,i-1,j,k,i,j,k,n)*P_ref(P,i-1,j,k,n);
-			FLOAT bottom = A_ref(A,i,j-1,k,i,j,k,n)*P_ref(P,i,j-1,k,n);
-			FLOAT back = A_ref(A,i,j,k-1,i,j,k,n)*P_ref(P,i,j,k-1,n);
-			FLOAT diag = A_diag( A, L, i, j, k, n );
-			FLOAT e = diag - square(left) - square(bottom) - square(back);
+			double left = A_ref(A,i-1,j,k,i,j,k,n)*P_ref(P,i-1,j,k,n);
+			double bottom = A_ref(A,i,j-1,k,i,j,k,n)*P_ref(P,i,j-1,k,n);
+			double back = A_ref(A,i,j,k-1,i,j,k,n)*P_ref(P,i,j,k-1,n);
+			double diag = A_diag( A, L, i, j, k, n );
+			double e = diag - square(left) - square(bottom) - square(back);
 			if( e < a*diag ) e = diag;
 			P[i][j][k] = 1.0/sqrtf(e);
 		}
 	} END_FOR;
 }
 
-static void applyPreconditioner( FLOAT ***z, FLOAT ***r, FLOAT ***P, FLOAT ***L, char ***A, int n ) {
+static void applyPreconditioner( FLOAT ***z, FLOAT ***r, double ***P, FLOAT ***L, char ***A, int n ) {
 #if USE_PRECOND
-	static FLOAT ***q = alloc3D<FLOAT>(n,n,n);
+	static double ***q = alloc3D<double>(n,n,n);
 	clear(q,n);
 	
 	// Lq = r
@@ -146,11 +148,11 @@ static void applyPreconditioner( FLOAT ***z, FLOAT ***r, FLOAT ***P, FLOAT ***L,
 		for( int j=0; j<n; j++ ) {
 			for( int k=0; k<n; k++ ) {
 				if( A[i][j][k] == FLUID ) {
-					FLOAT left = A_ref(A,i-1,j,k,i,j,k,n)*P_ref(P,i-1,j,k,n)*P_ref(q,i-1,j,k,n);
-					FLOAT bottom = A_ref(A,i,j-1,k,i,j,k,n)*P_ref(P,i,j-1,k,n)*P_ref(q,i,j-1,k,n);
-					FLOAT back = A_ref(A,i,j,k-1,i,j,k,n)*P_ref(P,i,j,k-1,n)*P_ref(q,i,j,k-1,n);
+					double left = A_ref(A,i-1,j,k,i,j,k,n)*P_ref(P,i-1,j,k,n)*P_ref(q,i-1,j,k,n);
+					double bottom = A_ref(A,i,j-1,k,i,j,k,n)*P_ref(P,i,j-1,k,n)*P_ref(q,i,j-1,k,n);
+					double back = A_ref(A,i,j,k-1,i,j,k,n)*P_ref(P,i,j,k-1,n)*P_ref(q,i,j,k-1,n);
 					
-					FLOAT t = r[i][j][k] - left - bottom - back;
+					double t = r[i][j][k] - left - bottom - back;
 					q[i][j][k] = t*P[i][j][k];
 				}
 			}
@@ -162,11 +164,11 @@ static void applyPreconditioner( FLOAT ***z, FLOAT ***r, FLOAT ***P, FLOAT ***L,
 		for( int j=n-1; j>=0; j-- ) {
 			for( int k=n-1; k>=0; k-- ) {
 				if( A[i][j][k] == FLUID ) {
-					FLOAT right = A_ref(A,i,j,k,i+1,j,k,n)*P_ref(P,i,j,k,n)*P_ref(z,i+1,j,k,n);
-					FLOAT top = A_ref(A,i,j,k,i,j+1,k,n)*P_ref(P,i,j,k,n)*P_ref(z,i,j+1,k,n);
-					FLOAT front = A_ref(A,i,j,k,i,j,k+1,n)*P_ref(P,i,j,k,n)*P_ref(z,i,j,k+1,n);
+					double right = A_ref(A,i,j,k,i+1,j,k,n)*P_ref(P,i,j,k,n)*P_ref(z,i+1,j,k,n);
+					double top = A_ref(A,i,j,k,i,j+1,k,n)*P_ref(P,i,j,k,n)*P_ref(z,i,j+1,k,n);
+					double front = A_ref(A,i,j,k,i,j,k+1,n)*P_ref(P,i,j,k,n)*P_ref(z,i,j,k+1,n);
 					
-					FLOAT t = q[i][j][k] - right - top - front;
+					double t = q[i][j][k] - right - top - front;
 					z[i][j][k] = t*P[i][j][k];
 				}
 			}
@@ -178,7 +180,7 @@ static void applyPreconditioner( FLOAT ***z, FLOAT ***r, FLOAT ***P, FLOAT ***L,
 }
 
 // Conjugate Gradient Method
-static void conjGrad( char ***A, FLOAT ***P, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
+static void conjGrad( char ***A, double ***P, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
 	// Pre-allocate Memory
 	static FLOAT ***r = alloc3D<FLOAT>(n,n,n);
 	static FLOAT ***z = alloc3D<FLOAT>(n,n,n);
@@ -221,7 +223,7 @@ void solver::setSubcell( char value ) {
 
 void solver::solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
 #if USE_PRECOND
-	static FLOAT ***P = alloc3D<FLOAT>(n,n,n);
+	static double ***P = alloc3D<double>(n,n,n);
 #else
 	static FLOAT ***P = NULL;
 #endif
