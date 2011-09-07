@@ -706,13 +706,10 @@ void flip3D::init( int load_step ) {
 			max_dens = fmax(max_dens,p->dens);
 			delete p;
 		}
-		printf( "max_dens = %f\n", max_dens );
 		particles.clear();
 		
-		double w;
-		
 		// Place Fluid Particles And Walls
-		w = DENSITY*WALL_THICK;
+		double w = DENSITY*WALL_THICK;
 		for( int i=0; i < N/DENSITY; i++ ) {
 			for( int j=0; j < N/DENSITY; j++ ) {
 				for( int k=0; k < N/DENSITY; k++ ) {
