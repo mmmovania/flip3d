@@ -1224,6 +1224,9 @@ void flip3D::simulateStep() {
 	
     // Solve Fluid
 	dump( "Solving Liquid Flow...");
+    if( step == 1 && N > 64 ) {
+        dump( "\n>>> NOTICE:\nBe advised that the first step of pressure solver really takes time.\nJust be patient :-)\n<<<\n");
+    }
 	add_ExtForce();
     solve_picflip();
     dump( "Took %.2f sec\n", dumptime() );
