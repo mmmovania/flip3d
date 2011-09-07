@@ -209,7 +209,7 @@ static void conjGrad( char ***A, FLOAT ***P, FLOAT ***L, FLOAT ***x, FLOAT ***b,
         
 		applyPreconditioner(z,r,P,L,A,n);		// Apply Conditioner z = f(r)
 		double a2 = product( A, z, r, n );		// a2 = z . r
-		double beta = a2/a;
+		double beta = a2/a;                     // beta = a2 / a
 		op( A, z, s, s, beta, n );				// s = z + beta*s
 		a = a2;
 	}
@@ -219,15 +219,12 @@ void solver::setSubcell( char value ) {
 	subcell = value;
 }
 
-FLOAT solver::solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
-	static FLOAT ***r = alloc3D<FLOAT>(n,n,n);
+void solver::solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
 #if USE_PRECOND
 	static FLOAT ***P = alloc3D<FLOAT>(n,n,n);
 #else
 	static FLOAT ***P = NULL;
 #endif
-	clear(r,n);
-	
 	// Flip Divergence
 	flip(b,n);
 	
@@ -239,6 +236,4 @@ FLOAT solver::solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n ) {
 #endif
 	// Conjugate Gradient Method
 	conjGrad(A,P,L,x,b,n);
-	residual(A,L,x,b,r,n);
-	return sqrt(product( A, r, r, n ))/(n*n);
 }

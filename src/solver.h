@@ -8,5 +8,5 @@
 
 namespace solver {
 	void setSubcell( char value );
-	FLOAT solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n );
+	void solve( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***b, int n );
 }
