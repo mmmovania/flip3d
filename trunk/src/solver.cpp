@@ -41,8 +41,8 @@ static void compute_Ax( char ***A, FLOAT ***L, FLOAT ***x, FLOAT ***ans, int n )
 }
 
 // ans = x^T * x
-static FLOAT product( char ***A, FLOAT ***x, FLOAT ***y, int n ) {
-    static FLOAT ans;
+static double product( char ***A, FLOAT ***x, FLOAT ***y, int n ) {
+    static double ans;
     ans = 0.0;
 #ifdef _OPENMP
     #pragma omp for reduction(+:ans)
@@ -186,30 +186,30 @@ static void conjGrad( char ***A, FLOAT ***P, FLOAT ***L, FLOAT ***x, FLOAT ***b,
 	
     compute_Ax( A, L, x, z, n );                // z = applyA(x)
 	op( A, b, z, r, -1.0, n );                  // r = b-Ax
-    FLOAT error2_0 = product( A, r, r, n );     // error2_0 = r . r
+    double error2_0 = product( A, r, r, n );    // error2_0 = r . r
     
 	applyPreconditioner(z,r,P,L,A,n);			// Apply Conditioner z = f(r)
 	copy(s,z,n);								// s = z
 	
-    FLOAT eps = 1.0e-2 * (n*n*n);
-	FLOAT a = product( A, z, r, n );			// a = z . r
+    double eps = 1.0e-2 * (n*n*n);
+	double a = product( A, z, r, n );			// a = z . r
     dump("\n");
 	for( int k=0; k<n*n*n; k++ ) {
 		compute_Ax( A, L, s, z, n );			// z = applyA(s)
-		FLOAT alpha = a/product( A, z, s, n );	// alpha = a/(z . s)
+		double alpha = a/product( A, z, s, n );	// alpha = a/(z . s)
 		op( A, x, s, x, alpha, n );				// x = x + alpha*s
 		op( A, r, z, r, -alpha, n );			// r = r - alpha*z;
 		FLOAT error2 = product( A, r, r, n );	// error2 = r . r
         error2_0 = fmax(error2_0,error2);
         
         // Dump Progress
-        FLOAT rate = powf(1.0 - fmax(0.0,fmin(1.0,(error2-eps)/(error2_0-eps))),6);
-        dump( "%d th %s Iteration %f%% Solved.\n", k+1, USE_PRECOND ? "PCG" : "CG", 100.0*rate );
+        double rate = 1.0 - fmax(0.0,fmin(1.0,(error2-eps)/(error2_0-eps)));
+        dump( "%d th %s Iteration %f%% Solved.\n", k+1, USE_PRECOND ? "PCG" : "CG", 100.0*powf(rate,6) );
         if( error2 <= eps ) break;
         
 		applyPreconditioner(z,r,P,L,A,n);		// Apply Conditioner z = f(r)
-		FLOAT a2 = product( A, z, r, n );		// a2 = z . r
-		FLOAT beta = a2/a;
+		double a2 = product( A, z, r, n );		// a2 = z . r
+		double beta = a2/a;
 		op( A, z, s, s, beta, n );				// s = z + beta*s
 		a = a2;
 	}
