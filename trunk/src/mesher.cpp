@@ -145,7 +145,10 @@ void mesher::generateMesh(	char ***A, sorter *sort, std::vector<particle *> &par
 		double y = j*h;
 		double z = k*h;
 		FLOAT p[3] = { x, y, z };
-		double value = implicit::implicit_func( sort, p, density );	
+        double value = implicit::implicit_func( sort, p, density );	
+        if( i==0 || i==mg-1 || j==0 || j==mg-1 || k==0 || k==mg-1 ) {
+            value = fmax(value,0.01);
+        }
 		dense_grid[(mg*mg)*k+mg*j+i] = -value;	
 	} END_FOR
 
