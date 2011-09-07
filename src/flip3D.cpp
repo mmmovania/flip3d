@@ -22,7 +22,7 @@
 
 using namespace std;
 
-#define	N               128
+#define	N               32
 #define WRITE_OBJ       0
 #define WRITE_SAVE      0
 #define MAX_STEP        600
