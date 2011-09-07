@@ -203,7 +203,7 @@ static void conjGrad( char ***A, FLOAT ***P, FLOAT ***L, FLOAT ***x, FLOAT ***b,
         error2_0 = fmax(error2_0,error2);
         
         // Dump Progress
-        FLOAT rate = 1.0 - (error2-eps)/(error2_0-eps);
+        FLOAT rate = powf(1.0 - fmax(0.0,fmin(1.0,(error2-eps)/(error2_0-eps))),6);
         dump( "%d th %s Iteration %f%% Solved.\n", k+1, USE_PRECOND ? "PCG" : "CG", 100.0*rate );
         if( error2 <= eps ) break;
         
