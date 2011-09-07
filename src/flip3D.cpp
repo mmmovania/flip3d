@@ -999,7 +999,7 @@ static void subtract_grid() {
 static void write_mesh() {
     // Generate Mesh
     dump( "[ MESH EXPORT ] Generating Meshes...");
-    mesher::generateMesh( A, sort, particles, DENSITY, N/DENSITY+1, vertices, normals, faces );
+    mesher::generateMesh( A, sort, particles, DENSITY, N+1, vertices, normals, faces );
     dump( "%.2f sec\n", dumptime() );
 
     // Write Into File
