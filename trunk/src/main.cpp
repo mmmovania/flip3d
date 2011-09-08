@@ -2,13 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if defined(__APPLE__) || defined(MACOSX)
-#include <sys/time.h>
-#include <unistd.h>
-#else
-#include <sys/time.h>
-#endif
-
 int main (int argc, char * argv[]) {
 	int frame = 0;
 	if( argc == 2  ) {
