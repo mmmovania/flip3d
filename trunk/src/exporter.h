@@ -12,5 +12,5 @@
 
 namespace exporter {
 	void write3D( int step, std::vector<double> &vertices, std::vector<double> &normals, std::vector<int> &faces, 
-				 std::vector<Object> &objects, std::vector<particle *> &particles, int gn, FLOAT density );
+				 std::vector<Object> &objects, std::vector<particle *> &particles, FLOAT wall_thick );
 }

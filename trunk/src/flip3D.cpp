@@ -23,7 +23,7 @@
 using namespace std;
 
 #define	N               32
-#define WRITE_OBJ       0
+#define WRITE_FILE      1
 #define WRITE_SAVE      0
 #define MAX_STEP        600
 
@@ -1004,7 +1004,7 @@ static void write_mesh() {
 
     // Write Into File
     dump( "[ MESH EXPORT ] Writing Meshes...");
-    exporter::write3D( step, vertices, normals, faces, objects, particles, N, DENSITY);
+    exporter::write3D( step, vertices, normals, faces, objects, particles, WALL_THICK );
     dump( "%.2f sec\n", dumptime() );
 }
 
@@ -1252,7 +1252,7 @@ void flip3D::simulateStep() {
 #endif
     
 	// Write Mesh
-#if WRITE_OBJ
+#if WRITE_FILE
 	write_mesh();
 #endif
     
