@@ -91,8 +91,8 @@ static void writeSunflow( int frame, vector<double> &vertices, vector<double> &n
     }
     
 	// Write into a new scene file
-	char path[64];
-	sprintf(path, "render/sunflow/%d_scene.sc", frame );
+	char path[128];
+	sprintf(path, "render/sunflow/%d_scene_tmp.sc", frame );
     
 	FILE *fp = fopen( path, "w" );
     if( ! fp ) {
@@ -121,6 +121,9 @@ static void writeSunflow( int frame, vector<double> &vertices, vector<double> &n
 	
 	fprintf( fp, "}\n" );
 	fclose(fp);
+    
+    sprintf(path, "mv render/sunflow/%d_scene_tmp.sc render/sunflow/%d_scene.sc", frame, frame );
+    system(path);
 }
 
 void write_obj( int frame, vector<double> &vertices, vector<double> &normals, vector<int> &faces, FLOAT wall_thick) {
