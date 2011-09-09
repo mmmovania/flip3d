@@ -6,7 +6,7 @@ Just do:
 
 That's All.
 
-How To Render With Sunflow:
+How To Render With Sunflow (Java Runtime Required) :
 
 Please download sunflow-bin-v0.07.2.zip and expand here by running
 
